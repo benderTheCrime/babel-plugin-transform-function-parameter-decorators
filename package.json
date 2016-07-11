@@ -1,0 +1,29 @@
+{
+  "name": "babel-plugin-transform-function-parameter-decorators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib",
+  "scripts": {
+    "build": "babel src -d lib",
+    "watch": "babel src -d lib -w",
+    "postinstall": "npm build",
+    "test": "ava"
+  },
+  "author": "",
+  "license": "MIT",
+  "ava": {
+    "files": [
+      "test/src/**/*.spec.js"
+    ],
+    "babel": {
+      "plugins": [
+        "../../lib/index"
+      ]
+    }
+  },
+  "dependencies": {
+    "ava": "0.15.2",
+    "babel-cli": "6.3.17",
+    "babel-core": "6.3.17"
+  }
+}
