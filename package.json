@@ -1,29 +1,50 @@
 {
   "name": "babel-plugin-transform-function-parameter-decorators",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Babel plugin to transform function parameter decorators",
   "main": "lib",
   "scripts": {
     "build": "babel src -d lib",
     "watch": "babel src -d lib -w",
-    "postinstall": "npm build",
+    "postinstall": "npm run build",
+    "prepublish": "npm run build",
     "test": "ava"
   },
-  "author": "",
+  "author": "Joe Groseclose",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benderTheCrime/babel-plugin-transform-function-parameter-decorators.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benderTheCrime/babel-plugin-transform-function-parameter-decorators/issues"
+  },
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "function",
+    "decorators"
+  ],
   "ava": {
     "files": [
-      "test/src/**/*.spec.js"
+      "./test/index.js"
     ],
     "babel": {
+      "presets": [
+        "es2015"
+      ],
       "plugins": [
-        "../../lib/index"
+        "transform-decorators-legacy",
+        "../",
+        "transform-runtime"
       ]
     }
   },
   "dependencies": {
-    "ava": "0.15.2",
-    "babel-cli": "6.3.17",
-    "babel-core": "6.3.17"
+    "ava": "^0.15.2",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-runtime": "^6.9.0"
   }
 }
