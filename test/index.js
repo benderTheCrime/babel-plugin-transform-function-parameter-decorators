@@ -246,10 +246,11 @@ test(function(t) {
 
 // Arrow functions
 // test(function(t) {
-//     const FOO = (@bar baz) => bar;
+//     const FOO = (@bar baz) => baz;
+//     const BAR = (@bar baz) => baz;
 //
-//
-//     t.is(FOO('foo'), 'bar')
+//     t.is(FOO('foo'), 'bar');
+//     t.is(BAR('foo'), 'bar');
 //
 //     function bar(baz) {
 //         return 'bar';
@@ -269,43 +270,62 @@ test(function(t) {
 //     }
 // });
 
-test(function(t) {
-    class Foo {
-        bar(@baz qux) {
-            return qux;
-        }
-    }
-
-    t.is(new Foo().bar('foo'), 'baz');
-
-    function baz(qux) {
-        t.is('foo', qux);
-
-        return 'baz';
-    }
-});
-
-test(function(t) {
-    class Foo {
-        static bar(@baz qux) {
-            return qux;
-        }
-    }
-
-    t.is(Foo.bar('foo'), 'baz');
-
-    function baz(qux) {
-        t.is('foo', qux);
-
-        return 'baz';
-    }
-});
-
-
-
-// Arrow functions
 // ClassMethod
-// Anonymous functions
-// Static class Method
-// Object method, Object property method
-// Nested function
+// test(function(t) {
+//     class Foo {
+//         bar(@baz qux) {
+//             return qux;
+//         }
+//     }
+//
+//     t.is(new Foo().bar('foo'), 'baz');
+//
+//     function baz(qux) {
+//         t.is('foo', qux);
+//
+//         return 'baz';
+//     }
+// });
+
+// static ClassMethod
+// test(function(t) {
+//     class Foo {
+//         static bar(@baz qux) {
+//             return qux;
+//         }
+//     }
+//
+//     t.is(Foo.bar('foo'), 'baz');
+//
+//     function baz(qux) {
+//         t.is('foo', qux);
+//
+//         return 'baz';
+//     }
+// });
+
+
+// ObjectMethod s
+test(function(t) {
+    const OBJ = {
+        // foo: function(@qux bar) {
+        //     t.is('bar', bar);
+        // },
+        // bar: function bar(@qux baz) {
+        //     t.is('bar', baz);
+        // },
+        baz(@qux quux) {
+            t.is('bar', quux);
+        }
+    }
+
+    // OBJ.foo('foo');
+    // OBJ.bar('foo');
+    OBJ.baz('foo');
+
+    function qux(quux) {
+        t.is('foo', quux);
+
+        return 'bar';
+    }
+});

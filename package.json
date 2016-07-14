@@ -8,7 +8,7 @@
     "watch": "babel src -d lib -w",
     "postinstall": "npm run build",
     "prepublish": "npm run build",
-    "test": "ava"
+    "test": "./node_modules/.bin/ava"
   },
   "author": "Joe Groseclose",
   "license": "MIT",

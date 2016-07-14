@@ -9,7 +9,11 @@ export default function({ types }) {
             // MemberExpression: parseFunctionPath,
             // MemberDeclaration: parseFunctionPath,
             ObjectMethod: parseFunctionPath,
-            ClassMethod: parseFunctionPath
+            ClassMethod: function(path) {
+                console.log(path.node);
+                console.log(path.get('params'));//.map(p => p.node && p.node.decorators));
+                return parseFunctionPath(path);
+            }
         }
     };
 }
