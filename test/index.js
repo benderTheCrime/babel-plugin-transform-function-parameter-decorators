@@ -1,15 +1,12 @@
 const test = require('ava');
 
-
-// No decorators
-test(function(t) {
+test('no decorators', function(t) {
     t.is((function foo(bar) {
         return bar;
     })('baz'), 'baz');
 });
 
-// Single decorator, single argument
-test(function(t) {
+test('single decorator, single argument', function(t) {
     t.is(foo('foo'), 'baz');
 
     function foo(@bar baz) {
@@ -23,8 +20,7 @@ test(function(t) {
     }
 });
 
-// Single Decorator, many arguments
-test(function(t) {
+test('single decorator, many arguments', function(t) {
     t.deepEqual(foo('foo', 'bar'), [ 'baz', 'qux' ]);
 
     function foo(@bar baz, @bing qux) {
@@ -44,8 +40,7 @@ test(function(t) {
     }
 });
 
-// Many Decorators, single argument
-test(function(t) {
+test('many decorators, single argument', function(t) {
     t.is(foo('foo'), 'baz');
 
     function foo(@bar @bing baz) {
@@ -65,8 +60,8 @@ test(function(t) {
     }
 });
 
-// Many Decorators, many arguments
-test(function(t) {
+
+test('many decorators, many arguments', function(t) {
     t.deepEqual(foo('foo', 'foo'), [ 'baz', 'baz' ]);
 
     function foo(@bar @bing baz, @bar @bing qux) {
@@ -86,8 +81,8 @@ test(function(t) {
     }
 });
 
-// Single decorator, single argument, single param
-test(function(t) {
+
+test('single decorator, single argument, single param', function(t) {
     t.is(foo('foo'), 'baz');
 
     function foo(@bar('baz') baz) {
@@ -103,8 +98,7 @@ test(function(t) {
     }
 });
 
-// Single decorator, many arguments, single param
-test(function(t) {
+test('single decorator, many arguments, single param', function(t) {
     t.deepEqual(foo('foo', 'bar'), [ 'baz', 'qux' ]);
 
     function foo(@bar('baz') baz, @bing('qux') qux) {
@@ -128,8 +122,7 @@ test(function(t) {
     }
 });
 
-// Single decorator, single argument, many params
-test(function(t) {
+test('single decorator, single argument, many params', function(t) {
     t.deepEqual(foo('foo'), [ 'baz', 'qux' ]);
 
     function foo(@bar('baz', 'qux') baz) {
@@ -145,8 +138,8 @@ test(function(t) {
     }
 });
 
-// Single decorator, many arguments, many params
-test(function(t) {
+
+test('single decorator, many arguments, many params', function(t) {
     t.deepEqual(foo('foo', 'foo'), [ [ 'foo', 'bar' ], [ 'baz', 'qux' ] ]);
 
     function foo(@bar('foo', 'bar') baz, @bar('baz', 'qux') qux) {
@@ -162,8 +155,7 @@ test(function(t) {
     }
 });
 
-// Many Decorators, single argument, single params
-test(function(t) {
+test('many decorators, single argument, single params', function(t) {
     t.is(foo('foo'), 'baz');
 
     function foo(@bar('baz') @bing('qux') baz) {
@@ -187,8 +179,7 @@ test(function(t) {
     }
 });
 
-// Many decorators, many arguments, single param
-test(function(t) {
+test('many decorators, many arguments, single param', function(t) {
     t.deepEqual(foo('foo', 'foo'), [ 'baz', 'baz' ]);
 
     function foo(@bar('baz') @bing('qux') baz, @bar('baz') @bing('qux') qux) {
@@ -212,8 +203,7 @@ test(function(t) {
     }
 });
 
-// Many decorators, many arguments, many params
-test(function(t) {
+test('many decorators, many arguments, many params', function(t) {
     t.deepEqual(foo('foo', 'foo'), [ [ 'foo', 'bar' ], [ 'foo', 'bar' ] ]);
 
     function foo(
@@ -244,8 +234,7 @@ test(function(t) {
     }
 });
 
-// Arrow functions
-// test(function(t) {
+// test('arrow functions', function(t) {
 //     const FOO = (@bar baz) => baz;
 //     const BAR = (@bar baz) => baz;
 //
@@ -257,8 +246,7 @@ test(function(t) {
 //     }
 // });
 
-// Anonymous functions
-// test(function(t) {
+// test('anonymous functions', function(t) {
 //     t.is((function(@foo bar) {
 //         return bar;
 //     })('foo'), 'bar');
@@ -270,8 +258,7 @@ test(function(t) {
 //     }
 // });
 
-// ClassMethod
-// test(function(t) {
+// test('ClassMethod', function(t) {
 //     class Foo {
 //         bar(@baz qux) {
 //             return qux;
@@ -287,8 +274,7 @@ test(function(t) {
 //     }
 // });
 
-// static ClassMethod
-// test(function(t) {
+// test('static ClassMethod', function(t) {
 //     class Foo {
 //         static bar(@baz qux) {
 //             return qux;
@@ -304,9 +290,7 @@ test(function(t) {
 //     }
 // });
 
-
-// ObjectMethod s
-test(function(t) {
+test('ObjectMethod', function(t) {
     const OBJ = {
         // foo: function(@qux bar) {
         //     t.is('bar', bar);
