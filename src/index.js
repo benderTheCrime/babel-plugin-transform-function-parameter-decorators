@@ -1,60 +1,37 @@
-let t;
-
 export default function({ types }) {
-    t = types;
+    return { visitor: { Function: parseFunctionPath } };
 
-    return {
-        visitor: {
-            FunctionDeclaration: parseFunctionPath,
-            // MemberExpression: parseFunctionPath,
-            // MemberDeclaration: parseFunctionPath,
-            ObjectMethod: parseFunctionPath,
-            ClassMethod: function(path) {
-                console.log(path.node);
-                console.log(path.get('params'));//.map(p => p.node && p.node.decorators));
-                return parseFunctionPath(path);
-            }
-        }
-    };
-}
+    function parseFunctionPath(path) {
+        const params = (path.get('params') || []).reverse();
 
+        params.forEach(function(param) {
+            if (param.node && Array.isArray(param.node.decorators)) {
+                let currentDecorator;
 
-// TODO YOU HAVE TO INSTALL TRANSFORM DECORATORS LEGACY
-function parseFunctionPath(path) {
-    const params = (path.get('params') || []).reverse();
+                param.node.decorators.reverse().forEach(function(decorator) {
 
-    // console.log('PARAM', params);
+                    /**
+                     * TODO: Validate the name of the decorator is not the same
+                     * as any of the passed params
+                     */
+                    const callNode = types.callExpression(
+                        decorator.expression, [
+                            currentDecorator ||
+                            types.Identifier(`_${param.node.name}`)
+                        ]
+                    );
 
-
-    // while (true) {
-    //     console.log(1);
-    // }
-
-    params.forEach(function(param) {
-        // console.log('PARAM', param.node.decorators);
-        if (param.node && Array.isArray(param.node.decorators)) {
-            let currentDecorator;
-
-            param.node.decorators.reverse().forEach(function(decorator) {
-                let callNode = t.callExpression(
-                    decorator.expression,
-                    [ currentDecorator || t.Identifier(`_${param.node.name}`) ]
-                );
-
-                currentDecorator = callNode;
-            });
-            param.parentPath.get('body').unshiftContainer(
-                'body',
-                t.variableDeclaration(
-                    'var', [
-                        t.variableDeclarator(
-                            t.Identifier(param.node.name),
-                            currentDecorator
+                    currentDecorator = callNode;
+                });
+                param.parentPath.get('body').unshiftContainer(
+                    'body', types.variableDeclaration('var', [
+                        types.variableDeclarator(
+                            types.Identifier(param.node.name), currentDecorator
                         )
-                    ]
-                )
-            );
-            param.replaceWith(t.Identifier(`_${param.node.name}`));
-        }
-    });
+                    ])
+                );
+                param.replaceWith(types.Identifier(`_${param.node.name}`));
+            }
+        });
+    }
 }
