@@ -5,7 +5,7 @@ export default function({ types }) {
                 (path.get('params') || []).reverse().forEach(function(param) {
                     let currentDecorator;
 
-                    (param.node.decorators || []).reverse()
+                    ((param.node && param.node.decorators) || []).reverse()
                         .forEach(function(decorator) {
 
                             /**
