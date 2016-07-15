@@ -2,10 +2,7 @@
 
 const test = require('ava');
 
-console.log(test);
-
 test('no decorators', function(t) {
-    console.log(t);
     t.is((function foo(bar) {
         return bar;
     })('baz'), 'baz');
