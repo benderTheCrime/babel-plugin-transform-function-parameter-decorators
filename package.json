@@ -3,6 +3,9 @@
   "version": "1.1.0",
   "description": "A Babel plugin to transform function parameter decorators",
   "main": "lib",
+  "engine": {
+    "node": "*"
+  },
   "scripts": {
     "build": "babel src -d lib",
     "watch": "babel src -d lib -w",
