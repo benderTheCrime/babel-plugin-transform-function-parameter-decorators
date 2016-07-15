@@ -246,7 +246,7 @@ test('many decorators, many arguments, many params', function(t) {
 //     }
 // });
 
-// test('anonymous functions', function(t) {
+// test('anonymous function', function(t) {
 //     t.is((function(@foo bar) {
 //         return bar;
 //     })('foo'), 'bar');
@@ -256,6 +256,10 @@ test('many decorators, many arguments, many params', function(t) {
 //
 //         return 'bar';
 //     }
+//
+//     (function(@foo bar) {
+//         return bar;
+//     })
 // });
 
 // test('ClassMethod', function(t) {

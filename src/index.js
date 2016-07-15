@@ -9,29 +9,15 @@ export default function({ types }) {
             // MemberExpression: parseFunctionPath,
             // MemberDeclaration: parseFunctionPath,
             ObjectMethod: parseFunctionPath,
-            ClassMethod: function(path) {
-                console.log(path.node);
-                console.log(path.get('params'));//.map(p => p.node && p.node.decorators));
-                return parseFunctionPath(path);
-            }
+            ClassMethod: parseFunctionPath
         }
     };
 }
 
-
-// TODO YOU HAVE TO INSTALL TRANSFORM DECORATORS LEGACY
 function parseFunctionPath(path) {
     const params = (path.get('params') || []).reverse();
 
-    // console.log('PARAM', params);
-
-
-    // while (true) {
-    //     console.log(1);
-    // }
-
     params.forEach(function(param) {
-        // console.log('PARAM', param.node.decorators);
         if (param.node && Array.isArray(param.node.decorators)) {
             let currentDecorator;
 
