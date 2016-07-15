@@ -234,7 +234,7 @@ test('many decorators, many arguments, many params', function(t) {
 });
 
 // NOTE: This plugin does not work with arrow functions
-// test.only('arrow functions', function(t) {
+// test('arrow functions', function(t) {
 //     const FOO = (@bar baz) => baz;
 //     const BAR = (@bar baz) => { return baz };
 //
