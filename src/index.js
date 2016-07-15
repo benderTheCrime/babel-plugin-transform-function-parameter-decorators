@@ -3,40 +3,35 @@ export default function({ types }) {
         visitor: {
             Function: function parseFunctionPath(path) {
                 (path.get('params') || []).reverse().forEach(function(param) {
-                    const decorators = param.node.decorators.reverse();
+                    let currentDecorator;
 
-                    if (param.node && Array.isArray(decorators)) {
-                        let currentDecorator;
-
-                        decorators.forEach(function(decorator) {
+                    (param.node.decorators || []).reverse()
+                        .forEach(function(decorator) {
 
                             /**
                              * TODO: Validate the name of the decorator is not
                              * the same as any of the passed params
                              */
-                            const callNode = types.callExpression(
+                            currentDecorator = types.callExpression(
                                 decorator.expression, [
                                     currentDecorator ||
                                     types.Identifier(`_${param.node.name}`)
                                 ]
                             );
-
-                            currentDecorator = callNode;
                         });
 
-                        param.parentPath.get('body').unshiftContainer(
-                            'body', types.variableDeclaration('var', [
-                                types.variableDeclarator(
-                                    types.Identifier(param.node.name),
-                                    currentDecorator
-                                )
-                            ])
-                        );
+                    param.parentPath.get('body').unshiftContainer(
+                        'body', types.variableDeclaration('var', [
+                            types.variableDeclarator(
+                                types.Identifier(param.node.name),
+                                currentDecorator
+                            )
+                        ])
+                    );
 
-                        param.replaceWith(
-                            types.Identifier(`_${param.node.name}`)
-                        );
-                    }
+                    param.replaceWith(
+                        types.Identifier(`_${param.node.name}`)
+                    );
                 });
             }
         }
