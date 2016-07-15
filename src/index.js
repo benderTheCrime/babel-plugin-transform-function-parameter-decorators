@@ -1,46 +1,37 @@
-let t;
-
 export default function({ types }) {
-    t = types;
+    return { visitor: { Function: parseFunctionPath } };
 
-    return {
-        visitor: {
-            FunctionDeclaration: parseFunctionPath,
-            // MemberExpression: parseFunctionPath,
-            // MemberDeclaration: parseFunctionPath,
-            ObjectMethod: parseFunctionPath,
-            ClassMethod: parseFunctionPath
-        }
-    };
-}
+    function parseFunctionPath(path) {
+        const params = (path.get('params') || []).reverse();
 
-function parseFunctionPath(path) {
-    const params = (path.get('params') || []).reverse();
+        params.forEach(function(param) {
+            if (param.node && Array.isArray(param.node.decorators)) {
+                let currentDecorator;
 
-    params.forEach(function(param) {
-        if (param.node && Array.isArray(param.node.decorators)) {
-            let currentDecorator;
+                param.node.decorators.reverse().forEach(function(decorator) {
 
-            param.node.decorators.reverse().forEach(function(decorator) {
-                let callNode = t.callExpression(
-                    decorator.expression,
-                    [ currentDecorator || t.Identifier(`_${param.node.name}`) ]
-                );
+                    /**
+                     * TODO: Validate the name of the decorator is not the same
+                     * as any of the passed params
+                     */
+                    const callNode = types.callExpression(
+                        decorator.expression, [
+                            currentDecorator ||
+                            types.Identifier(`_${param.node.name}`)
+                        ]
+                    );
 
-                currentDecorator = callNode;
-            });
-            param.parentPath.get('body').unshiftContainer(
-                'body',
-                t.variableDeclaration(
-                    'var', [
-                        t.variableDeclarator(
-                            t.Identifier(param.node.name),
-                            currentDecorator
+                    currentDecorator = callNode;
+                });
+                param.parentPath.get('body').unshiftContainer(
+                    'body', types.variableDeclaration('var', [
+                        types.variableDeclarator(
+                            types.Identifier(param.node.name), currentDecorator
                         )
-                    ]
-                )
-            );
-            param.replaceWith(t.Identifier(`_${param.node.name}`));
-        }
-    });
+                    ])
+                );
+                param.replaceWith(types.Identifier(`_${param.node.name}`));
+            }
+        });
+    }
 }

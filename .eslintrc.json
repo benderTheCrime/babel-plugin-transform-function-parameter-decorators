@@ -1,0 +1,10 @@
+{
+  "extends": "benderthecrime",
+  "globals": {
+    "test": true
+  },
+  "rules": {
+    "require-jsdoc": 0,
+    "valid-jsdoc": 0
+  }
+}
