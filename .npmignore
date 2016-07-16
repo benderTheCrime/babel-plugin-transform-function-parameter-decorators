@@ -1,3 +1,5 @@
-/src
-/test
-/node_modules
+test
+.editorconfig
+.eslintrc.json
+.gitignore
+.npmignore
