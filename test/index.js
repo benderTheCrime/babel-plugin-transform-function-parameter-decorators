@@ -1,240 +1,61 @@
-/* eslint-disable no-unused-vars */
+import {
+    test0,
+    test,
+    test1,
+    test2,
+    test3,
+    test4,
+    test5,
+    test6,
+    test7,
+    test8,
+    test9,
+    test10,
+    test11,
+    test12,
+    Test
+} from './lib/index';
 
-const test = require('ava');
+const t = require('ava');
 
-test('no decorators', function(t) {
-    t.is((function foo(bar) {
-        return bar;
-    })('baz'), 'baz');
-});
+// No decorators
+t(t => t.is(test('foo'), 'foo'));
 
-test('single decorator, single argument', function(t) {
-    t.is(foo('foo'), 'baz');
+// Single decorator, single argument
+t(t => t.is(test1('foo'), 'foo1'));
 
-    function foo(@bar baz) {
-        return baz;
-    }
+// Single decorator, many arguments
+t(t => t.deepEqual(test2('foo', 'bar'), [ 'foo1', 'bar1' ]));
 
-    function bar(baz) {
-        t.is('foo', baz);
+// Many decorators, single argument
+t(t => t.is(test3('foo'), 'foo12'));
 
-        return 'baz';
-    }
-});
+// Many decorators, many arguments
+t(t => t.deepEqual(test4('foo', 'bar'), [ 'foo12', 'bar12' ]));
 
-test('single decorator, many arguments', function(t) {
-    t.deepEqual(foo('foo', 'bar'), [ 'baz', 'qux' ]);
+// Single decorator, single argument, single param
+t(t => t.is(test5('foo'), 'foobar3'));
 
-    function foo(@bar baz, @bing qux) {
-        return [ baz, qux ];
-    }
+// Single decorator, many arguments, single param
+t(t => t.deepEqual(test6('foo', 'bar'), [ 'foobar3', 'barbaz3' ]));
 
-    function bar(baz) {
-        t.is('foo', baz);
+// Single decorator, single argument, many params
+t(t => t.deepEqual(test7('foo'), 'foobarbaz4'));
 
-        return 'baz';
-    }
+// Single decorator, many arguments, many params
+t(t => t.deepEqual(test8('foo', 'baz'), [ 'foobarbaz4', 'bazquxquux4' ]));
 
-    function bing(qux) {
-        t.is('bar', qux);
+// Many decorators, single argument, single param
+t(t => t.is(test9('foo'), 'foobaz3bar3'));
 
-        return 'qux';
-    }
-});
+// Many decorators, many arguments, single param
+t(t => t.deepEqual(test10('foo', 'baz'), [ 'foobaz3bar3', 'bazquux3qux3' ]));
 
-test('many decorators, single argument', function(t) {
-    t.is(foo('foo'), 'baz');
-
-    function foo(@bar @bing baz) {
-        return baz;
-    }
-
-    function bar(baz) {
-        t.is('qux', baz);
-
-        return 'baz';
-    }
-
-    function bing(qux) {
-        t.is('foo', qux);
-
-        return 'qux';
-    }
-});
-
-test('many decorators, many arguments', function(t) {
-    t.deepEqual(foo('foo', 'foo'), [ 'baz', 'baz' ]);
-
-    function foo(@bar @bing baz, @bar @bing qux) {
-        return [ baz, qux ];
-    }
-
-    function bar(baz) {
-        t.is('qux', baz);
-
-        return 'baz';
-    }
-
-    function bing(qux) {
-        t.is('foo', qux);
-
-        return 'qux';
-    }
-});
-
-test('single decorator, single argument, single param', function(t) {
-    t.is(foo('foo'), 'baz');
-
-    function foo(@bar('baz') baz) {
-        return baz;
-    }
-
-    function bar(baz) {
-        return function(qux) {
-            t.is('foo', qux);
-
-            return baz;
-        };
-    }
-});
-
-test('single decorator, many arguments, single param', function(t) {
-    t.deepEqual(foo('foo', 'bar'), [ 'baz', 'qux' ]);
-
-    function foo(@bar('baz') baz, @bing('qux') qux) {
-        return [ baz, qux ];
-    }
-
-    function bar(baz) {
-        return function(qux) {
-            t.is('foo', qux);
-
-            return baz;
-        };
-    }
-
-    function bing(qux) {
-        return function(quux) {
-            t.is('bar', quux);
-
-            return qux;
-        };
-    }
-});
-
-test('single decorator, single argument, many params', function(t) {
-    t.deepEqual(foo('foo'), [ 'baz', 'qux' ]);
-
-    function foo(@bar('baz', 'qux') baz) {
-        return baz;
-    }
-
-    function bar(baz, qux) {
-        return function(quux) {
-            t.is('foo', quux);
-
-            return [ baz, qux ];
-        };
-    }
-});
-
-test('single decorator, many arguments, many params', function(t) {
-    t.deepEqual(foo('foo', 'foo'), [ [ 'foo', 'bar' ], [ 'baz', 'qux' ] ]);
-
-    function foo(@bar('foo', 'bar') baz, @bar('baz', 'qux') qux) {
-        return [ baz, qux ];
-    }
-
-    function bar(baz, qux) {
-        return function(quux) {
-            t.is('foo', quux);
-
-            return [ baz, qux ];
-        };
-    }
-});
-
-test('many decorators, single argument, single params', function(t) {
-    t.is(foo('foo'), 'baz');
-
-    function foo(@bar('baz') @bing('qux') baz) {
-        return baz;
-    }
-
-    function bar(baz) {
-        return function(qux) {
-            t.is('qux', qux);
-
-            return baz;
-        };
-    }
-
-    function bing(qux) {
-        return function(quux) {
-            t.is('foo', quux);
-
-            return qux;
-        };
-    }
-});
-
-test('many decorators, many arguments, single param', function(t) {
-    t.deepEqual(foo('foo', 'foo'), [ 'baz', 'baz' ]);
-
-    function foo(@bar('baz') @bing('qux') baz, @bar('baz') @bing('qux') qux) {
-        return [ baz, qux ];
-    }
-
-    function bar(baz) {
-        return function(qux) {
-            t.is('qux', qux);
-
-            return baz;
-        };
-    }
-
-    function bing(qux) {
-        return function(quux) {
-            t.is('foo', quux);
-
-            return qux;
-        };
-    }
-});
-
-test('many decorators, many arguments, many params', function(t) {
-    t.deepEqual(foo('foo', 'foo'), [ [ 'foo', 'bar' ], [ 'foo', 'bar' ] ]);
-
-    function foo(
-        @bar('foo', 'bar') @bing('baz', 'qux') baz,
-        @bar('foo', 'bar') @bing('baz', 'qux') qux
-    ) {
-        return [ baz, qux ];
-    }
-
-    function bar(baz, qux) {
-        t.deepEqual([ 'foo', 'bar' ], [ baz, qux ]);
-
-        return function(quux) {
-            t.deepEqual([ 'baz', 'qux' ], quux);
-
-            return [ baz, qux ];
-        };
-    }
-
-    function bing(bing, qux) {
-        t.deepEqual([ 'baz', 'qux' ], [ bing, qux ]);
-
-        return function(quux) {
-            t.is('foo', quux);
-
-            return [ bing, qux ];
-        };
-    }
-});
+// Many decorators, many arguments, many params
+t(t => t.deepEqual(test11('foo', 'foo'), [ 'foobarbaz4foobar4', 'fooquxquux4bazqux4' ]));
 
 // NOTE: This plugin does not work with arrow functions
-// test.only('arrow functions', function(t) {
+// test('arrow functions', function(t) {
 //     const FOO = (@bar baz) => baz;
 //     const BAR = (@bar baz) => { return baz };
 //
@@ -246,64 +67,37 @@ test('many decorators, many arguments, many params', function(t) {
 //     }
 // });
 
-test('anonymous function', function(t) {
-    t.is((function(@foo bar) {
-        return bar;
-    })('foo'), 'bar');
+// Anonymous function
+t(t => t.is(test12(), 'foo1'));
 
-    function foo(bar) {
-        t.is('foo', bar);
+// ClassMethod
+// Class method, decorator
+t(t => t.is(new Test().test0('foo'), 'foo1'));
 
-        return 'bar';
-    }
-});
+// Class method, decorator, argument
+t(t => t.is(new Test().test('foo'), 'foobar3'));
 
-test('ClassMethod', function(t) {
-    class Foo {
-        bar(@qux quux) {
-            return quux;
-        }
+// Static class method, decorator
+t(t => t.is(Test.test0('foo'), 'foo1'));
 
-        static baz(@qux quux) {
-            return quux;
-        }
-    }
+// Static class method, decorator, argument
+t(t => t.is(Test.test('foo'), 'foobar3'));
 
-    t.is(new Foo().bar('foo'), 'baz');
-    t.is(Foo.baz('foo'), 'baz');
+// Object Method
+// Object property, anonymous function, decorator
+t(t => t.is(test0.test0('foo'), 'foo1'));
 
-    function qux(quux) {
-        t.is('foo', quux);
+// Object property, anonymous function, decorator, argument
+t(t => t.is(test0.test1('foo'), 'foobar3'));
 
-        return 'baz';
-    }
-});
+// Object property, named function, decorator
+t(t => t.is(test0.test2('foo'), 'foo1'));
 
-test('ObjectMethod', function(t) {
-    const OBJ = {
+// Object property, named function, decorator, argument
+t(t => t.is(test0.test3('foo'), 'foobar3'));
 
-        /* eslint-disable object-shorthand */
-        foo: function(@qux bar) {
-            t.is('bar', bar);
-        },
+// Object property, shorthand, decorator
+t(t => t.is(test0.test4('foo'), 'foo1'));
 
-        /* eslint-enable object-shorthand */
-
-        bar: function bar(@qux baz) {
-            t.is('bar', baz);
-        },
-        baz(@qux quux) {
-            t.is('bar', quux);
-        }
-    };
-
-    OBJ.foo('foo');
-    OBJ.bar('foo');
-    OBJ.baz('foo');
-
-    function qux(quux) {
-        t.is('foo', quux);
-
-        return 'bar';
-    }
-});
+// Object property, shorthand, decorator, argument
+t(t => t.is(test0.test5('foo'), 'foobar3'));
