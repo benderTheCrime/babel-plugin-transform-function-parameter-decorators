@@ -1,14 +1,17 @@
 {
   "name": "babel-plugin-transform-function-parameter-decorators",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Babel plugin to transform function parameter decorators",
   "main": "lib",
+  "engine": {
+    "node": "*"
+  },
   "scripts": {
     "build": "babel src -d lib",
     "watch": "babel src -d lib -w",
     "postinstall": "npm run build",
     "prepublish": "npm run build",
-    "test": "./node_modules/.bin/ava"
+    "test": "babel test/src -d test/lib && ava"
   },
   "author": "Joe Groseclose",
   "license": "MIT",
@@ -29,16 +32,7 @@
     "files": [
       "./test/index.js"
     ],
-    "babel": {
-      "presets": [
-        "es2015"
-      ],
-      "plugins": [
-        "transform-decorators-legacy",
-        "../",
-        "transform-runtime"
-      ]
-    }
+    "babel": "inherit"
   },
   "dependencies": {
     "ava": "^0.15.2",
