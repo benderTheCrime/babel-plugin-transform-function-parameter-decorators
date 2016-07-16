@@ -11,7 +11,7 @@
     "watch": "babel src -d lib -w",
     "postinstall": "npm run build",
     "prepublish": "npm run build",
-    "test": "ava --tap"
+    "test": "babel test/src -d test/lib & ava --tap"
   },
   "author": "Joe Groseclose",
   "license": "MIT",
@@ -32,16 +32,7 @@
     "files": [
       "./test/index.js"
     ],
-    "babel": {
-      "presets": [
-        "es2015"
-      ],
-      "plugins": [
-        "transform-decorators-legacy",
-        "../",
-        "transform-runtime"
-      ]
-    }
+    "babel": "inherit"
   },
   "dependencies": {
     "ava": "^0.15.2",
