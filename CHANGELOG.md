@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Modified syntax
+- Updated tests: decoupled test functions from the tests themselves
 
 ### Fixed
 - n/a
