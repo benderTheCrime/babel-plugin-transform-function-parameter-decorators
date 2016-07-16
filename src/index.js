@@ -3,7 +3,7 @@ export default function({ types }) {
         visitor: {
             Function: function parseFunctionPath(path) {
                 (path.get('params') || []).reverse().forEach(function(param) {
-                    let currentDecorator;
+                    let resultantDecorator;
 
                     ((param.node && param.node.decorators) || []).reverse()
                         .forEach(function(decorator) {
@@ -12,26 +12,28 @@ export default function({ types }) {
                              * TODO: Validate the name of the decorator is not
                              * the same as any of the passed params
                              */
-                            currentDecorator = types.callExpression(
+                            resultantDecorator = types.callExpression(
                                 decorator.expression, [
-                                    currentDecorator ||
+                                    resultantDecorator ||
                                     types.Identifier(`_${param.node.name}`)
                                 ]
                             );
                         });
 
-                    param.parentPath.get('body').unshiftContainer(
-                        'body', types.variableDeclaration('var', [
-                            types.variableDeclarator(
-                                types.Identifier(param.node.name),
-                                currentDecorator
-                            )
-                        ])
-                    );
+                    if (resultantDecorator) {
+                        param.parentPath.get('body').unshiftContainer(
+                            'body', types.variableDeclaration('var', [
+                                types.variableDeclarator(
+                                    types.Identifier(param.node.name),
+                                    resultantDecorator
+                                )
+                            ])
+                        );
 
-                    param.replaceWith(
-                        types.Identifier(`_${param.node.name}`)
-                    );
+                        param.replaceWith(
+                            types.Identifier(`_${param.node.name}`)
+                        );
+                    }
                 });
             }
         }

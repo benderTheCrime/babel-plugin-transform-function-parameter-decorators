@@ -1,3 +1,7 @@
 language: node_js
 node_js:
-  - "stable"
+  - stable
+script:
+ - babel test/src -d test/lib && ava --tap
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
