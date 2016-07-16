@@ -43,7 +43,7 @@ If you are including your plugins manually and using `transform-decorators-legac
 Nor will any other decorators for that matter. If you need to use function parameter decorators please consider not using an arrow function.
 
 #### NOTE: Name your parameters/decorators intelligently!
-Your function parameter cannot be named the same as your decorator or the name of your variable prefixed with an underscore: `_${var}`. Let's take a look at the reasoning behind this:
+Your function parameter cannot be named the same as your decorator or the name of your variable prefixed with an underscore: `_${var}`. This will be fixed in a future version. Let's take a look at the reasoning behind this:
 ```javascript
 // Before
 function foo(@bar baz) {
