@@ -11,7 +11,7 @@
     "watch": "babel src -d lib -w",
     "postinstall": "npm run build",
     "prepublish": "npm run build",
-    "test": "babel test/src -d test/lib & ava --tap"
+    "test": "babel test/src -d test/lib && ava --tap"
   },
   "author": "Joe Groseclose",
   "license": "MIT",
