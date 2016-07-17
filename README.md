@@ -1,5 +1,4 @@
 # Babel Plugin Transform Function Parameter Decorators
-
 This is a plugin for Babel 6 that is used to transform function parameter
 decorators into calls to the decorator function within the body of the decorated
 function:
@@ -24,9 +23,7 @@ This package depends on `babel-plugin-transform-decorators-legacy`
 ```bash
 npm install babel-plugin-transform-decorators-legacy babel-plugin-transform-function-parameter-decorators
 ```
-
-Add the following line to your .babelrc file:
-
+Add the following line to your `.babelrc` file:
 ```json
     {
         "plugins": [
