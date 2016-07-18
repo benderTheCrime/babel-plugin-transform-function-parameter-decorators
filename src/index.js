@@ -2,39 +2,43 @@ export default function({ types }) {
     return {
         visitor: {
             Function: function parseFunctionPath(path) {
-                (path.get('params') || []).reverse().forEach(function(param) {
-                    let resultantDecorator;
+                (path.get('params') || [])
+                    .slice()
+                    .reverse()
+                    .forEach(function(param) {
+                        const name = param.node.name;
+                        const paramUidName =
+                            path.scope.generateUidIdentifier(name).name;
+                        let resultantDecorator;
 
-                    (param.node.decorators || []).reverse()
-                        .forEach(function(decorator) {
+                        (param.node.decorators || [])
+                            .slice()
+                            .reverse()
+                            .forEach(function(decorator) {
+                                resultantDecorator = types.callExpression(
+                                    decorator.expression, [
+                                        resultantDecorator ||
+                                        types.Identifier(paramUidName)
+                                    ]
+                                );
+                            });
 
-                            /**
-                             * TODO: Validate the name of the decorator is not
-                             * the same as any of the passed params
-                             */
-                            resultantDecorator = types.callExpression(
-                                decorator.expression, [
-                                    resultantDecorator ||
-                                    types.Identifier(`_${param.node.name}`)
-                                ]
+                        if (resultantDecorator) {
+                            const decoratedParamUidName =
+                                path.scope.generateUidIdentifier(name).name;
+
+                            path.scope.rename(name, decoratedParamUidName);
+                            param.parentPath.get('body').unshiftContainer(
+                                'body', types.variableDeclaration('var', [
+                                    types.variableDeclarator(
+                                        types.Identifier(decoratedParamUidName),
+                                        resultantDecorator
+                                    )
+                                ])
                             );
-                        });
-
-                    if (resultantDecorator) {
-                        param.parentPath.get('body').unshiftContainer(
-                            'body', types.variableDeclaration('var', [
-                                types.variableDeclarator(
-                                    types.Identifier(param.node.name),
-                                    resultantDecorator
-                                )
-                            ])
-                        );
-
-                        param.replaceWith(
-                            types.Identifier(`_${param.node.name}`)
-                        );
-                    }
-                });
+                            param.replaceWith(types.Identifier(paramUidName));
+                        }
+                    });
             }
         }
     };
