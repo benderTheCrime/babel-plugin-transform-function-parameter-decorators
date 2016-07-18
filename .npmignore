@@ -3,3 +3,4 @@ test
 .eslintrc.json
 .gitignore
 .npmignore
+.travis.yml
