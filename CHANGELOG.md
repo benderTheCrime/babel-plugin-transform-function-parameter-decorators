@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Prevent the plugin from mutating the list of decorators passed to the param
 
 ### Removed
-- n/a
+- Removed plugin `transform-decorators-legacy` from root `.babelrc`
 
 ## [1.1.1] - 2016-07-16
 ### Added
