@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added support for decorators named the same as their associated properties (renamed the param with `path.scope.generateUidIdentifier`)
 - Added `.travis.yml` to `.npmignore`
+- Added `.editorconfig`
 
 ### Changed
 - n/a
