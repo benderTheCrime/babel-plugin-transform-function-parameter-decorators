@@ -1,3 +1,5 @@
+import babelHelperOptimiseCallExpression from 'babel-helper-optimise-call-expression';
+
 export default function({ types }) {
     return {
         visitor: {
@@ -28,11 +30,24 @@ export default function({ types }) {
                                 path.scope.generateUidIdentifier(name).name;
 
                             path.scope.rename(name, decoratedParamUidName);
+                            const resultantCallExpression =
+                                babelHelperOptimiseCallExpression(
+                                    resultantDecorator.callee.callee,
+                                    types.thisExpression(),
+                                    resultantDecorator.callee.arguments
+                            );
+                            const decoratorExpreesion =
+                                babelHelperOptimiseCallExpression(
+                                    resultantCallExpression,
+                                    types.thisExpression(),
+                                    resultantDecorator.arguments
+                                );
+
                             param.parentPath.get('body').unshiftContainer(
                                 'body', types.variableDeclaration('var', [
                                     types.variableDeclarator(
                                         types.Identifier(decoratedParamUidName),
-                                        resultantDecorator
+                                        decoratorExpreesion
                                     )
                                 ])
                             );
